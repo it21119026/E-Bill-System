@@ -34,6 +34,8 @@ public class Signup extends JFrame implements ActionListener {
         meterText.setVisible(false);
         add(meterText);
 
+
+
         JLabel Employer = new JLabel("Employer ID");
         Employer.setBounds(30,100,125,20);
         Employer.setVisible(true);

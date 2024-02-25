@@ -2,11 +2,15 @@ package electricity.billing.system;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class main_class extends JFrame {
-
-    main_class() {
+public class main_class extends JFrame implements ActionListener {
+    String acctype;
+    String meter_pass;
+    main_class(String acctype, String meter_pass){
+        this.meter_pass = meter_pass;
+        this.acctype = acctype;
         setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         ImageIcon imageIcon = new ImageIcon(ClassLoader.getSystemResource("icon/splash/ebs.png"));
@@ -54,7 +58,7 @@ public class main_class extends JFrame {
 
         JMenu info = new JMenu("Information");
         info.setFont(new Font("serif",Font.PLAIN,15));
-        menuBar.add(info) ;
+
 
         JMenuItem upinfo =new JMenuItem("Update Information");
         upinfo.setFont(new Font("monospaced",Font.PLAIN,14));
@@ -74,7 +78,7 @@ public class main_class extends JFrame {
 
         JMenu user = new JMenu("User");
         user.setFont(new Font("serif",Font.PLAIN,15));
-        menuBar.add(user) ;
+
 
         JMenuItem paybill =new JMenuItem("Pay Bill");
         paybill.setFont(new Font("monospaced",Font.PLAIN,14));
@@ -94,7 +98,7 @@ public class main_class extends JFrame {
 
         JMenu bill = new JMenu("Bill");
         bill.setFont(new Font("serif",Font.PLAIN,15));
-        menuBar.add(bill);
+
 
         JMenuItem genBill =new JMenuItem("Generate Bill");
         genBill.setFont(new Font("monospaced",Font.PLAIN,14));
@@ -108,7 +112,7 @@ public class main_class extends JFrame {
 
         JMenu utility = new JMenu("Utility");
         utility.setFont(new Font("serif",Font.PLAIN,15));
-        menuBar.add(utility);
+
 
         JMenuItem notepad =new JMenuItem("Notepad");
         notepad.setFont(new Font("monospaced",Font.PLAIN,14));
@@ -129,7 +133,7 @@ public class main_class extends JFrame {
 
         JMenu exit = new JMenu("Exit");
         exit.setFont(new Font("serif",Font.PLAIN,15));
-        menuBar.add(exit);
+
 
         JMenuItem eexit =new JMenuItem("Exit");
         eexit.setFont(new Font("monospaced",Font.PLAIN,14));
@@ -140,18 +144,61 @@ public class main_class extends JFrame {
 
 
 
-
-
-
-
-
+        if (acctype.equals("Admin")){
+            menuBar.add(menu);
+        }else {
+            menuBar.add(bill);
+            menuBar.add(user);
+            menuBar.add(info);
+        }
+        menuBar.add(utility);
+        menuBar.add(exit);
 
 
         setLayout(new FlowLayout());
         setVisible(true);
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String msg = e.getActionCommand();
+        if (msg.equals("New Customer")) {
+            new newCustomer();
+        } else if (msg.equals("Customer Details")) {
+            new customer_details();
+        } else if (msg.equals("Deposit Details")) {
+            new deposit_details();
+        } else if (msg.equals("Calculate Bill")) {
+            new calculate_bill();
+        } else if (msg.equals("View Information")) {
+            new view_information(meter_pass);
+        } else if (msg.equals("Update Information")) {
+            new update_information(meter_pass);
+        } else if (msg.equals("Bill Details")) {
+            new bill_details(meter_pass);
+        } else if (msg.equals("Calculator")) {
+            try{
+                Runtime.getRuntime().exec("calc.exe");
+            }catch (Exception E){
+                E.printStackTrace();
+            }
+        } else if (msg.equals("Notepad")) {
+            try{
+                Runtime.getRuntime().exec("notepad.exe");
+            }catch (Exception E){
+                E.printStackTrace();
+            }
+        } else if (msg.equals("Exit")) {
+            setVisible(false);
+            new Login();
+        } else if (msg.equals("Pay Bill")) {
+            new pay_bill(meter_pass);
+        } else if (msg.equals("Generate Bill")) {
+            new generate_bill(meter_pass);
+        }
+    }
+
     public static void main(String[] args) {
-        new main_class();
+        new main_class("","");
     }
 }
